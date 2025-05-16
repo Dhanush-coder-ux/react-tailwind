@@ -8,6 +8,11 @@ from shoppinggallery.Authentication.Authenticationuser import user
 from fastapi import APIRouter
 from shoppinggallery.database.databasemodels import models
 from icecream import ic
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from shoppinggallery.Authentication.Authenticationuser import user
 
 
 
