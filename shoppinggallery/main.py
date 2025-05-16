@@ -9,6 +9,9 @@ from shoppinggallery.database import database
 
 
 app= FastAPI()
+@app.get("/")
+def read_root():
+    return {"message": "Hello from FastAPI on Vercel"}
 
 
 from fastapi.middleware.cors import CORSMiddleware
