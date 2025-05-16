@@ -2,15 +2,12 @@ from fastapi import FastAPI, File, UploadFile, Form, Depends, HTTPException, sta
 from sqlalchemy.orm import Session
 from sqlalchemy import select,desc,func
 from uuid import uuid4,uuid5
-from shoppinggallery.database.depends import getdb
+from shoppinggallery.database.depends.getdb import get_db
 from shoppinggallery.database.databasemodels import product_models
-from shoppinggallery.Authentication.Authenticationuser import user
+from shoppinggallery.Authentication.Authenticationuser.user import get_protected
 from fastapi import APIRouter
-from shoppinggallery.database.databasemodels import models
-import sys
 
-import os
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 
 
 
@@ -35,8 +32,8 @@ async def add_product(
     image2: UploadFile = File(None),
     image3: UploadFile= File(None),
     image4: UploadFile = File(None),
-    db: Session = Depends(getdb.get_db),
-    admine: dict = Depends(user.get_protected)
+    db: Session = Depends(get_db),
+    admine: dict = Depends(get_protected)
 ):
 
     if admine["role"] != "admin":
@@ -86,7 +83,7 @@ async def add_product(
 
 
 @router.delete('/remove/{product_id}')
-async def remove_product(product_id:str,db:Session=Depends(getdb.get_db),admine:dict =Depends(user.get_protected)):
+async def remove_product(product_id:str,db:Session=Depends(get_db),admine:dict =Depends(get_protected)):
     try:
         if admine["role"] != "admin":
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only admins can remove products")
@@ -107,7 +104,7 @@ async def remove_product(product_id:str,db:Session=Depends(getdb.get_db),admine:
     
 
 @router.get('/single/{product_id}')
-async def get_single_product(product_id:int,db:Session=Depends(getdb.get_db)):
+async def get_single_product(product_id:int,db:Session=Depends(get_db)):
     try:
         sing_product = db.query(product_models.Product
                                 ).filter(product_models.Product.id == product_id
@@ -121,7 +118,7 @@ async def get_single_product(product_id:int,db:Session=Depends(getdb.get_db)):
      
 
 @router.get('/list')
-async def list_all_products(db: Session = Depends(getdb.get_db)):
+async def list_all_products(db: Session = Depends(get_db)):
     try:
         products = db.execute(
             select(
@@ -152,7 +149,7 @@ async def list_all_products(db: Session = Depends(getdb.get_db)):
 
 
 @router.get('/shop/product/image/{product_id}/{imageid}')
-def get_img(product_id:str,imageid:str,db: Session = Depends(getdb.get_db)):
+def get_img(product_id:str,imageid:str,db: Session = Depends(get_db)):
     _get_img=db.query(
         product_models.ProductImages
         ).filter(product_models.ProductImages.id == imageid,product_models.ProductImages.product_id == product_id
