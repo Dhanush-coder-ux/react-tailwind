@@ -3,7 +3,7 @@ from shoppinggallery.database.depends import getdb
 from sqlalchemy.orm import Session
 from shoppinggallery.Authentication.Authenticationuser.user import get_protected
 from pydantic import BaseModel
-from typing import List,Literal
+from typing import List
 from shoppinggallery.database.databasemodels.order_model import Orders,OrderStatus
 from icecream import ic
 
