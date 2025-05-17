@@ -1,14 +1,11 @@
 from fastapi import FastAPI
-from backend.Authentication.Authenticationuser import user
+from .Authentication.Authenticationuser import user
 from backend.controllers import cart_route
 from backend.controllers import product_route
 from backend.controllers import order_controls
 from backend.database.databasemodels import models
 from backend.database import database
 
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 
 app= FastAPI()
